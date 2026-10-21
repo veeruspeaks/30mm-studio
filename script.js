@@ -5,7 +5,6 @@
 // Business contact details, update these in one place
 const CONTACT = {
   email: "30mmstudio09@gmail.com",
-  whatsapp: "918197549609", // country code + number, digits only
 };
 
 // Portfolio items. Set `youtube` to a YouTube video ID to show its thumbnail and play it in the modal.
@@ -345,21 +344,27 @@ function briefText(b) {
   return [...lines, "", b.message].join("\n");
 }
 
-// Pressing Enter in the form sends the brief through WhatsApp
+// Pressing Enter in the form sends the brief by email too
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (validate()) waLink.click();
+  if (validate()) mailLink.click();
 });
 
-// Keep the WhatsApp link's prefilled text in sync with the form
-const waLink = $("#briefWhatsapp");
-function updateWhatsapp() {
-  const text = encodeURIComponent("Hi 30mm Studio, here's my project brief:\n\n" + briefText(collectBrief()));
-  waLink.href = `https://wa.me/${CONTACT.whatsapp}?text=${text}`;
+// Keep the email link's subject and body in sync with the form
+const mailLink = $("#briefEmail");
+function updateMail() {
+  const b = collectBrief();
+  const subject = encodeURIComponent(`New project brief: ${b.company || b.name || "30mm Studio website"}`);
+  const body = encodeURIComponent("Hi 30mm Studio, here's my project brief:\n\n" + briefText(b));
+  mailLink.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
 }
 form.addEventListener("input", () => {
-  updateWhatsapp();
+  updateMail();
   if (note.classList.contains("err")) validate(); // clear the error once fixed
 });
-updateWhatsapp();
-waLink.addEventListener("click", (e) => { if (!validate()) e.preventDefault(); });
+updateMail();
+mailLink.addEventListener("click", (e) => {
+  if (!validate()) { e.preventDefault(); return; }
+  note.className = "form-note ok";
+  note.textContent = `Your email app should open with the brief ready to send. If it doesn't, write to us at ${CONTACT.email}.`;
+});
