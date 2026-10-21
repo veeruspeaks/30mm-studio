@@ -51,7 +51,7 @@ const REELS = [
 
 // Categories kept in PROJECTS but not shown yet. To show one again, remove it
 // here and add its filter button back in index.html.
-const HIDDEN_CATEGORIES = ["youtube"];
+const HIDDEN_CATEGORIES = ["youtube", "brand", "ugc"];
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
