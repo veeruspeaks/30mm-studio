@@ -10,6 +10,11 @@ const CONTACT = {
 
 // Portfolio items. Set `youtube` to a YouTube video ID to show its thumbnail and play it in the modal.
 const PROJECTS = [
+  { title: "Brand Collab 01", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "1lbpZiuJzy8", hue: 356 },
+  { title: "Brand Collab 02", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "WrjbeJRFvTc", hue: 22 },
+  { title: "Brand Collab 03", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
+  { title: "Brand Collab 04", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
+  { title: "Brand Collab 05", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
   { title: "Launch Film", client: "Velora Watches", cat: "brand", label: "Brand Ad", dur: "01:00", hue: 356 },
   { title: "Morning Ritual", client: "Brewhaus Coffee", cat: "product", label: "Product Shoot", dur: "00:45", hue: 22 },
   { title: "Studio Setup Tour", client: "Tech Unboxed", cat: "youtube", label: "YouTube", dur: "12:48", hue: 210 },
