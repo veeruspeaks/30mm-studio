@@ -253,11 +253,15 @@ form.addEventListener("submit", (e) => {
   const subject = encodeURIComponent(`New project brief — ${b.company || b.name}`);
   window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${encodeURIComponent(briefText(b))}`;
   note.className = "form-note ok";
-  note.textContent = "Thanks! Your email app should open with the brief ready to send.";
+  note.textContent = `Your brief is ready in your email app. If it didn't open, write to us at ${CONTACT.email}.`;
 });
 
-$("#briefWhatsapp").addEventListener("click", () => {
-  if (!validate()) return;
+// Keep the WhatsApp link's prefilled text in sync with the form
+const waLink = $("#briefWhatsapp");
+function updateWhatsapp() {
   const text = encodeURIComponent("Hi 30mm Studio, here's my project brief:\n\n" + briefText(collectBrief()));
-  window.open(`https://wa.me/${CONTACT.whatsapp}?text=${text}`, "_blank", "noopener");
-});
+  waLink.href = `https://wa.me/${CONTACT.whatsapp}?text=${text}`;
+}
+form.addEventListener("input", updateWhatsapp);
+updateWhatsapp();
+waLink.addEventListener("click", (e) => { if (!validate()) e.preventDefault(); });
