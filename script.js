@@ -1,8 +1,8 @@
 /* =========================================================
-   30mm Studio — interactions
+   30mm Studio interactions
    ========================================================= */
 
-// Business contact details — update these in one place
+// Business contact details, update these in one place
 const CONTACT = {
   email: "hello@30mmstudio.com",
   whatsapp: "919999999999", // country code + number, digits only
@@ -10,18 +10,30 @@ const CONTACT = {
 
 // Portfolio items. Add a `video` URL (YouTube/Vimeo embed) to play it in the modal.
 const PROJECTS = [
-  { title: "Velora Watches — Launch Film", client: "Velora", cat: "brand", label: "Brand Ad", dur: "01:00", hue: 356 },
-  { title: "Brewhaus Coffee — Morning Ritual", client: "Brewhaus", cat: "product", label: "Product Shoot", dur: "00:45", hue: 22 },
-  { title: "Tech Unboxed — Studio Setup Tour", client: "Tech Unboxed", cat: "youtube", label: "YouTube", dur: "12:48", hue: 210 },
-  { title: "Urban Threads — Drop 04", client: "Urban Threads", cat: "reels", label: "Reels & Shorts", dur: "00:30", hue: 340, tall: true },
-  { title: "Nova Fitness — Stronger Every Day", client: "Nova Fitness", cat: "brand", label: "Brand Ad", dur: "00:40", hue: 0 },
-  { title: "Aura Skincare — Serum Macro Series", client: "Aura", cat: "product", label: "Product Shoot", dur: "00:20", hue: 30 },
-  { title: "Kitchen Diaries — Season 2 Episode", client: "Kitchen Diaries", cat: "youtube", label: "YouTube", dur: "18:05", hue: 15 },
-  { title: "Café Lumen — 15s Reel Pack", client: "Café Lumen", cat: "reels", label: "Reels & Shorts", dur: "00:15", hue: 45, tall: true },
-  { title: "Monarch Realty — Brand Story", client: "Monarch", cat: "brand", label: "Brand Ad", dur: "02:10", hue: 220 },
-  { title: "Pulse Audio — Headphones Hero", client: "Pulse Audio", cat: "product", label: "Product Shoot", dur: "00:35", hue: 260 },
-  { title: "Wanderlog — Himalaya Travel Vlog", client: "Wanderlog", cat: "youtube", label: "YouTube", dur: "22:31", hue: 190 },
-  { title: "Sole Society — Sneaker Shorts", client: "Sole Society", cat: "reels", label: "Reels & Shorts", dur: "00:25", hue: 350, tall: true },
+  { title: "Launch Film", client: "Velora Watches", cat: "brand", label: "Brand Ad", dur: "01:00", hue: 356 },
+  { title: "Morning Ritual", client: "Brewhaus Coffee", cat: "product", label: "Product Shoot", dur: "00:45", hue: 22 },
+  { title: "Studio Setup Tour", client: "Tech Unboxed", cat: "youtube", label: "YouTube", dur: "12:48", hue: 210 },
+  { title: "Drop 04", client: "Urban Threads", cat: "reels", label: "Reels & Shorts", dur: "00:30", hue: 340, tall: true },
+  { title: "Stronger Every Day", client: "Nova Fitness", cat: "brand", label: "Brand Ad", dur: "00:40", hue: 0 },
+  { title: "Serum Macro Series", client: "Aura Skincare", cat: "product", label: "Product Shoot", dur: "00:20", hue: 30 },
+  { title: "Season 2 Episode", client: "Kitchen Diaries", cat: "youtube", label: "YouTube", dur: "18:05", hue: 15 },
+  { title: "15s Reel Pack", client: "Café Lumen", cat: "reels", label: "Reels & Shorts", dur: "00:15", hue: 45, tall: true },
+  { title: "Brand Story", client: "Monarch Realty", cat: "brand", label: "Brand Ad", dur: "02:10", hue: 220 },
+  { title: "Headphones Hero", client: "Pulse Audio", cat: "product", label: "Product Shoot", dur: "00:35", hue: 260 },
+  { title: "Himalaya Travel Vlog", client: "Wanderlog", cat: "youtube", label: "YouTube", dur: "22:31", hue: 190 },
+  { title: "Sneaker Shorts", client: "Sole Society", cat: "reels", label: "Reels & Shorts", dur: "00:25", hue: 350, tall: true },
+];
+
+// Recent work reels (vertical carousel). Add a `video` embed URL to play it in the modal.
+const REELS = [
+  { title: "Launch Film", client: "Velora Watches", views: "1.2M", dur: "00:30", hue: 356 },
+  { title: "Morning Ritual", client: "Brewhaus Coffee", views: "860K", dur: "00:20", hue: 22 },
+  { title: "Drop 04", client: "Urban Threads", views: "3.2M", dur: "00:15", hue: 340 },
+  { title: "Stronger Every Day", client: "Nova Fitness", views: "940K", dur: "00:25", hue: 0 },
+  { title: "Serum Macro Series", client: "Aura Skincare", views: "510K", dur: "00:18", hue: 30 },
+  { title: "15s Reel Pack", client: "Café Lumen", views: "720K", dur: "00:15", hue: 45 },
+  { title: "Headphones Hero", client: "Pulse Audio", views: "1.8M", dur: "00:22", hue: 260 },
+  { title: "Sneaker Shorts", client: "Sole Society", views: "2.4M", dur: "00:28", hue: 350 },
 ];
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -116,6 +128,63 @@ new IntersectionObserver((entries, obs) => {
   obs.disconnect();
 }, { threshold: 0.1 }).observe(grid);
 
+/* ---------- Reel carousel ---------- */
+const track = $("#reelTrack");
+track.innerHTML = REELS.map((r, i) => `
+  <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="Play ${r.client}: ${r.title}">
+    <div class="thumb" style="${thumbStyle(r.hue)}"></div>
+    <span class="reel-card__dur">${r.dur}</span>
+    <span class="reel-card__play"><span class="play-ico"></span></span>
+    <div class="reel-card__info">
+      <h3>${r.title}</h3>
+      <p>${r.client} · ${r.views} views</p>
+    </div>
+  </article>`).join("");
+
+const reelStep = () => track.querySelector(".reel-card").offsetWidth + 16;
+const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+function slide(dir) {
+  if (dir > 0 && atEnd()) track.scrollTo({ left: 0, behavior: "smooth" });
+  else track.scrollBy({ left: dir * reelStep(), behavior: "smooth" });
+}
+$("#reelPrev").addEventListener("click", () => slide(-1));
+$("#reelNext").addEventListener("click", () => slide(1));
+track.addEventListener("scroll", () => {
+  const max = track.scrollWidth - track.clientWidth;
+  $("#reelProgress").style.width = (max > 0 ? 20 + 80 * (track.scrollLeft / max) : 100) + "%";
+}, { passive: true });
+
+// Auto-advance, paused while the visitor is interacting
+let autoTimer = null;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function startAuto() { if (!reduceMotion) { stopAuto(); autoTimer = setInterval(() => slide(1), 3500); } }
+function stopAuto() { clearInterval(autoTimer); }
+["mouseenter", "touchstart", "focusin"].forEach((ev) => track.addEventListener(ev, stopAuto, { passive: true }));
+["mouseleave", "focusout"].forEach((ev) => track.addEventListener(ev, startAuto));
+startAuto();
+
+// Drag to scroll with a mouse
+let drag = null;
+track.addEventListener("pointerdown", (e) => {
+  if (e.pointerType !== "mouse") return;
+  drag = { x: e.clientX, left: track.scrollLeft, moved: false };
+  track.classList.add("dragging");
+});
+window.addEventListener("pointermove", (e) => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x;
+  if (Math.abs(dx) > 5) drag.moved = true;
+  track.scrollLeft = drag.left - dx;
+});
+window.addEventListener("pointerup", () => {
+  if (!drag) return;
+  track.classList.remove("dragging");
+  const moved = drag.moved;
+  setTimeout(() => { drag = null; }, 0);
+  if (moved) track.scrollTo({ left: Math.round(track.scrollLeft / reelStep()) * reelStep(), behavior: "smooth" });
+});
+track.addEventListener("click", (e) => { if (drag && drag.moved) { e.stopPropagation(); e.preventDefault(); } }, true);
+
 /* ---------- Video modal ---------- */
 const modal = $("#modal");
 const screen = $(".modal__screen", modal);
@@ -149,18 +218,21 @@ document.addEventListener("keydown", (e) => {
 function activate(el) {
   if (el.classList.contains("card")) {
     const p = PROJECTS[el.dataset.index];
-    openModal(p.title, p.video);
+    openModal(`${p.client}: ${p.title}`, p.video);
+  } else if (el.classList.contains("reel-card")) {
+    const r = REELS[el.dataset.reel];
+    openModal(`${r.client}: ${r.title}`, r.video);
   } else {
     openModal(el.dataset.title, el.dataset.video);
   }
 }
 document.addEventListener("click", (e) => {
-  const el = e.target.closest(".play-trigger, .reel, .card");
+  const el = e.target.closest(".play-trigger, .card, .reel-card");
   if (el) activate(el);
 });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter" && e.key !== " ") return;
-  const el = e.target.closest && e.target.closest("article.play-trigger, .card");
+  const el = e.target.closest && e.target.closest(".card, .reel-card");
   if (el && el === e.target) { e.preventDefault(); activate(el); }
 });
 
@@ -170,7 +242,7 @@ const revealObserver = new IntersectionObserver((entries) => {
     if (e.isIntersecting) { e.target.classList.add("in"); revealObserver.unobserve(e.target); }
   });
 }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
-$$(".reveal, .step").forEach((el) => { if (!el.closest(".hero")) revealObserver.observe(el); });
+$$(".reveal").forEach((el) => { if (!el.closest(".hero")) revealObserver.observe(el); });
 
 /* ---------- Count-up numbers ---------- */
 const countObserver = new IntersectionObserver((entries) => {
@@ -234,7 +306,7 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (!validate()) return;
   const b = collectBrief();
-  const subject = encodeURIComponent(`New project brief — ${b.company || b.name}`);
+  const subject = encodeURIComponent(`New project brief: ${b.company || b.name}`);
   window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${encodeURIComponent(briefText(b))}`;
   note.className = "form-note ok";
   note.textContent = `Your brief is ready in your email app. If it didn't open, write to us at ${CONTACT.email}.`;

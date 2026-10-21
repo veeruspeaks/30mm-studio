@@ -26,11 +26,11 @@
         <span class="logo__text"><b>30mm</b> Studio</span>
       </a>
       <nav class="nav" id="nav" aria-label="Main">
-        <a href="#home" class="nav__link active"><small>01</small>Home</a>
-        <a href="#work" class="nav__link"><small>02</small>Our Work</a>
-        <a href="#services" class="nav__link"><small>03</small>Services</a>
-        <a href="#about" class="nav__link"><small>04</small>About Us</a>
-        <a href="#contact" class="nav__link"><small>05</small>Contact</a>
+        <a href="#home" class="nav__link active">Home</a>
+        <a href="#work" class="nav__link">Our Work</a>
+        <a href="#services" class="nav__link">Services</a>
+        <a href="#about" class="nav__link">About Us</a>
+        <a href="#contact" class="nav__link">Contact</a>
         <a href="#contact" class="btn btn--red nav__cta">Start a Project</a>
       </nav>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
@@ -46,28 +46,21 @@
         <div class="hero__frame"></div>
       </div>
       <div class="container hero__inner">
-        <p class="eyebrow reveal"><span class="rec"></span>Video Production Studio</p>
         <h1 class="hero__title">
           <span class="line"><span>We frame stories</span></span>
           <span class="line"><span>that <em>move</em> brands.</span></span>
         </h1>
         <p class="hero__lead reveal" data-delay="2">
           30mm Studio is an independent creative house crafting brand films, product shoots,
-          YouTube content and social-first reels — from first idea to final cut.
+          YouTube content and social-first reels, from first idea to final cut.
         </p>
         <div class="hero__actions reveal" data-delay="3">
           <a href="#work" class="btn btn--red">View Our Work <span class="arrow">→</span></a>
-          <button class="btn btn--ghost play-trigger" data-title="30mm Studio — Showreel 2026">
+          <button class="btn btn--ghost play-trigger" data-title="30mm Studio Showreel 2026">
             <span class="play-ico"></span> Watch Showreel
           </button>
         </div>
-        <div class="hero__meta reveal" data-delay="4">
-          <div><strong data-count="250">0</strong><span>+ Projects delivered</span></div>
-          <div><strong data-count="80">0</strong><span>+ Brands served</span></div>
-          <div><strong data-count="6">0</strong><span>Years behind the lens</span></div>
-        </div>
       </div>
-      <a href="#showreel" class="scroll-hint" aria-label="Scroll down"><span></span></a>
     </section>
 
     <!-- Marquee -->
@@ -78,66 +71,22 @@
       </div>
     </div>
 
-    <!-- Showreel -->
-    <section class="section showreel" id="showreel">
-      <div class="container">
-        <div class="section__head">
-          <p class="eyebrow reveal">Showreel</p>
-          <h2 class="section__title reveal">A minute and a half of <em>what we do best.</em></h2>
-        </div>
-        <button class="reel reveal" data-title="30mm Studio — Showreel 2026" aria-label="Play showreel">
-          <div class="reel__media thumb thumb--reel"></div>
-          <div class="reel__hud">
-            <span class="hud__tl"><span class="rec"></span>REC</span>
-            <span class="hud__tr">4K · 24FPS</span>
-            <span class="hud__bl">ƒ/1.8 · 30mm</span>
-            <span class="hud__br">01:32</span>
-            <span class="hud__corner c1"></span><span class="hud__corner c2"></span>
-            <span class="hud__corner c3"></span><span class="hud__corner c4"></span>
-          </div>
-          <span class="reel__play"><span class="play-ico play-ico--lg"></span></span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Featured -->
-    <section class="section featured">
+    <!-- Recent work: reel carousel -->
+    <section class="section recent" aria-label="Recent work">
       <div class="container">
         <div class="section__head section__head--row">
           <div>
-            <p class="eyebrow reveal">Featured Projects</p>
-            <h2 class="section__title reveal">Recent work we're <em>proud of.</em></h2>
+            <p class="eyebrow reveal">Recent Work</p>
+            <h2 class="section__title reveal">Latest reels we're <em>proud of.</em></h2>
           </div>
-          <a href="#work" class="link-arrow reveal">See all projects →</a>
+          <div class="carousel__nav reveal">
+            <button class="carousel__btn" id="reelPrev" aria-label="Previous reels">←</button>
+            <button class="carousel__btn" id="reelNext" aria-label="Next reels">→</button>
+          </div>
         </div>
-        <div class="featured__grid">
-          <article class="feat reveal play-trigger" data-title="Velora Watches — Launch Film" tabindex="0">
-            <div class="thumb thumb--1"></div>
-            <div class="feat__info">
-              <span class="tag">Brand Ad</span>
-              <h3>Velora Watches — Launch Film</h3>
-              <p>60s hero film · Direction, shoot, grade</p>
-            </div>
-            <span class="feat__play"><span class="play-ico"></span></span>
-          </article>
-          <article class="feat reveal play-trigger" data-delay="1" data-title="Brewhaus Coffee — Product Series" tabindex="0">
-            <div class="thumb thumb--2"></div>
-            <div class="feat__info">
-              <span class="tag">Product Shoot</span>
-              <h3>Brewhaus Coffee — Product Series</h3>
-              <p>Tabletop macro · 12 deliverables</p>
-            </div>
-            <span class="feat__play"><span class="play-ico"></span></span>
-          </article>
-          <article class="feat reveal play-trigger" data-delay="2" data-title="Urban Threads — Reels Campaign" tabindex="0">
-            <div class="thumb thumb--3"></div>
-            <div class="feat__info">
-              <span class="tag">Reels &amp; Shorts</span>
-              <h3>Urban Threads — Reels Campaign</h3>
-              <p>20 vertical edits · 3.2M views</p>
-            </div>
-            <span class="feat__play"><span class="play-ico"></span></span>
-          </article>
+        <div class="carousel reveal">
+          <div class="carousel__track" id="reelTrack"><!-- populated by script.js --></div>
+          <div class="carousel__progress"><i id="reelProgress"></i></div>
         </div>
       </div>
     </section>
@@ -146,7 +95,7 @@
     <section class="section work" id="work">
       <div class="container">
         <div class="section__head">
-          <p class="eyebrow reveal"><span class="num">02</span> Our Work</p>
+          <p class="eyebrow reveal">Our Work</p>
           <h2 class="section__title reveal">The full <em>portfolio.</em></h2>
           <p class="section__lead reveal">Filter by category to browse brand campaigns, product films, long-form YouTube and short-form social content.</p>
         </div>
@@ -168,7 +117,7 @@
       <div class="container">
         <div class="section__head section__head--row">
           <div>
-            <p class="eyebrow reveal"><span class="num">03</span> Services</p>
+            <p class="eyebrow reveal">Services</p>
             <h2 class="section__title reveal">Everything you need, <em>under one roof.</em></h2>
           </div>
           <p class="section__lead reveal">From the first frame to the final pixel, we handle production, post and the digital home your content lives in.</p>
@@ -176,7 +125,6 @@
 
         <div class="services__list">
           <article class="service reveal">
-            <span class="service__num">01</span>
             <div class="service__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="13" width="28" height="22" rx="3"/><path d="M32 21l12-7v20l-12-7z"/><circle cx="13" cy="9" r="4"/><circle cx="24" cy="9" r="4"/></svg>
             </div>
@@ -188,7 +136,6 @@
             <span class="service__arrow">↗</span>
           </article>
           <article class="service reveal">
-            <span class="service__num">02</span>
             <div class="service__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="8" width="40" height="26" rx="3"/><path d="M4 28h40M16 40h16M24 34v6"/><path d="M10 20h8M22 16v8M28 18h10"/></svg>
             </div>
@@ -200,7 +147,6 @@
             <span class="service__arrow">↗</span>
           </article>
           <article class="service reveal">
-            <span class="service__num">03</span>
             <div class="service__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="14" y="4" width="20" height="40" rx="4"/><path d="M21 38h6"/><path d="M21 17l8 5-8 5z"/></svg>
             </div>
@@ -212,7 +158,6 @@
             <span class="service__arrow">↗</span>
           </article>
           <article class="service reveal">
-            <span class="service__num">04</span>
             <div class="service__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="8" width="40" height="32" rx="3"/><path d="M4 16h40"/><circle cx="9" cy="12" r="1"/><circle cx="13" cy="12" r="1"/><path d="M18 25l-5 4 5 4M30 25l5 4-5 4M26 23l-4 12"/></svg>
             </div>
@@ -233,56 +178,15 @@
         <div class="about__top">
           <div class="about__visual reveal">
             <div class="thumb thumb--about"></div>
-            <div class="about__badge">
-              <svg viewBox="0 0 120 120" class="badge__ring">
-                <defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
-                <text><textPath href="#circ">• SINCE 2020 • 30MM STUDIO • SINCE 2020 • 30MM STUDIO </textPath></text>
-              </svg>
-              <span class="badge__core">30</span>
-            </div>
           </div>
           <div class="about__text">
-            <p class="eyebrow reveal"><span class="num">04</span> About Us</p>
+            <p class="eyebrow reveal">About Us</p>
             <h2 class="section__title reveal">Small crew. <em>Big frames.</em></h2>
             <p class="reveal">30mm Studio started with a single camera, a 30mm lens and a belief that every brand has a story worth filming properly. What began as weekend shoots for local businesses has grown into a full-service studio working with startups, D2C brands and creators across the country.</p>
-            <p class="reveal">We stay deliberately lean — a tight team of directors, cinematographers, editors and designers — so you always work directly with the people making your film.</p>
-            <div class="stats">
-              <div class="stat reveal"><strong data-count="6">0</strong><span>Years of experience</span></div>
-              <div class="stat reveal" data-delay="1"><strong data-count="250">0</strong><span>Projects delivered</span></div>
-              <div class="stat reveal" data-delay="2"><strong data-count="40">0</strong><span>M+ views generated</span></div>
-              <div class="stat reveal" data-delay="3"><strong data-count="98">0</strong><span>% client retention</span></div>
-            </div>
+            <p class="reveal">We stay deliberately lean. A tight team of directors, cinematographers, editors and designers means you always work directly with the people making your film.</p>
           </div>
         </div>
 
-        <h3 class="sub-title reveal">The Team</h3>
-        <div class="team">
-          <article class="member reveal">
-            <div class="member__photo"><span>AR</span></div>
-            <h4>Arjun Rao</h4><p>Founder &amp; Director</p>
-          </article>
-          <article class="member reveal" data-delay="1">
-            <div class="member__photo"><span>MK</span></div>
-            <h4>Meera Kapoor</h4><p>Director of Photography</p>
-          </article>
-          <article class="member reveal" data-delay="2">
-            <div class="member__photo"><span>SD</span></div>
-            <h4>Sahil Desai</h4><p>Lead Editor &amp; Colourist</p>
-          </article>
-          <article class="member reveal" data-delay="3">
-            <div class="member__photo"><span>NP</span></div>
-            <h4>Nisha Patel</h4><p>Web &amp; Motion Designer</p>
-          </article>
-        </div>
-
-        <h3 class="sub-title reveal">How We Work</h3>
-        <ol class="process">
-          <li class="step reveal"><span class="step__num">01</span><h4>Discover</h4><p>A call to understand your brand, audience, goals and budget.</p></li>
-          <li class="step reveal" data-delay="1"><span class="step__num">02</span><h4>Plan</h4><p>Concept, script, storyboard, shot list and a clear timeline.</p></li>
-          <li class="step reveal" data-delay="2"><span class="step__num">03</span><h4>Shoot</h4><p>Our crew brings cinema gear, lighting and direction on set.</p></li>
-          <li class="step reveal" data-delay="3"><span class="step__num">04</span><h4>Edit</h4><p>Editing, grading, sound and motion with two revision rounds.</p></li>
-          <li class="step reveal" data-delay="4"><span class="step__num">05</span><h4>Deliver</h4><p>Final masters, cut-downs and platform-ready formats.</p></li>
-        </ol>
       </div>
     </section>
 
@@ -290,7 +194,7 @@
     <section class="section contact" id="contact">
       <div class="container contact__inner">
         <div class="contact__info">
-          <p class="eyebrow reveal"><span class="num">05</span> Start a Project</p>
+          <p class="eyebrow reveal">Start a Project</p>
           <h2 class="section__title reveal">Let's make something <em>worth watching.</em></h2>
           <p class="reveal">Tell us a little about your project and we'll get back within 24 hours with ideas and a quote.</p>
 
