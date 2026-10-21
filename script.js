@@ -49,6 +49,10 @@ const REELS = [
   { title: "Sneaker Shorts", client: "Sole Society", views: "2.4M", dur: "00:28", hue: 350 },
 ];
 
+// Categories kept in PROJECTS but not shown yet. To show one again, remove it
+// here and add its filter button back in index.html.
+const HIDDEN_CATEGORIES = ["youtube"];
+
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
@@ -103,7 +107,7 @@ function thumbStyle(hue) {
     radial-gradient(circle at 15% 85%, hsl(${hue} 20% 14%) 0, transparent 45%),
     linear-gradient(150deg, #1b1b1b, #0b0b0b)`;
 }
-grid.innerHTML = PROJECTS.map((p, i) => `
+grid.innerHTML = PROJECTS.map((p, i) => HIDDEN_CATEGORIES.includes(p.cat) ? "" : `
   <article class="card${p.tall ? " card--tall" : ""}" data-cat="${p.cat}" data-index="${i}" tabindex="0" role="button" aria-label="Play ${p.title}">
     <div class="card__media">
       <div class="thumb" style="${thumbStyle(p.hue)}"></div>
