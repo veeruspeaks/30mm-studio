@@ -191,22 +191,6 @@ const countObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.6 });
 $$("[data-count]").forEach((el) => countObserver.observe(el));
 
-/* ---------- Custom cursor ---------- */
-if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-  const cursor = $(".cursor");
-  let x = 0, y = 0, cx = 0, cy = 0;
-  document.addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; cursor.classList.add("visible"); });
-  document.addEventListener("mouseleave", () => cursor.classList.remove("visible"));
-  (function loop() {
-    cx += (x - cx) * 0.2; cy += (y - cy) * 0.2;
-    cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-    requestAnimationFrame(loop);
-  })();
-  document.addEventListener("mouseover", (e) => {
-    cursor.classList.toggle("hover", !!e.target.closest("a, button, .card, .feat, .service, label"));
-  });
-}
-
 /* ---------- Project brief form ---------- */
 const form = $("#brief");
 const note = $("#formNote");
