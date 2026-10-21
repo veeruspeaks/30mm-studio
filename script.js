@@ -15,40 +15,15 @@ const PROJECTS = [
   { title: "Brand Collab 03", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
   { title: "Brand Collab 04", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
   { title: "Brand Collab 05", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
-  { title: "Launch Film", client: "Velora Watches", cat: "brand", label: "Brand Ad", dur: "01:00", hue: 356 },
-  { title: "Morning Ritual", client: "Brewhaus Coffee", cat: "product", label: "Product Shoot", dur: "00:45", hue: 22 },
-  { title: "Studio Setup Tour", client: "Tech Unboxed", cat: "youtube", label: "YouTube", dur: "12:48", hue: 210 },
   { title: "Reel 01", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
   { title: "Reel 02", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "V-wRv02olPQ", hue: 10, tall: true },
-  { title: "Stronger Every Day", client: "Nova Fitness", cat: "brand", label: "Brand Ad", dur: "00:40", hue: 0 },
-  { title: "Serum Macro Series", client: "Aura Skincare", cat: "product", label: "Product Shoot", dur: "00:20", hue: 30 },
-  { title: "Season 2 Episode", client: "Kitchen Diaries", cat: "youtube", label: "YouTube", dur: "18:05", hue: 15 },
-  { title: "Brand Story", client: "Monarch Realty", cat: "brand", label: "Brand Ad", dur: "02:10", hue: 220 },
-  { title: "Headphones Hero", client: "Pulse Audio", cat: "product", label: "Product Shoot", dur: "00:35", hue: 260 },
-  { title: "Himalaya Travel Vlog", client: "Wanderlog", cat: "youtube", label: "YouTube", dur: "22:31", hue: 190 },
-  { title: "Honest Unboxing Review", client: "Glow Theory", cat: "ugc", label: "UGC", dur: "00:45", hue: 330, tall: true },
-  { title: "Day in My Life Ad", client: "FitFuel", cat: "ugc", label: "UGC", dur: "00:35", hue: 10 },
-  { title: "Customer Testimonial Series", client: "HomeNest", cat: "ugc", label: "UGC", dur: "00:30", hue: 200 },
   { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
   { title: "AI UGC 02", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "L9FkbrXl1Ws", hue: 160 },
   { title: "AI UGC 03", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "foid0NQ2hQs", hue: 230 },
 ];
 
-// Recent work reels (vertical carousel). Add a `video` embed URL to play it in the modal.
-const REELS = [
-  { title: "Launch Film", client: "Velora Watches", views: "1.2M", dur: "00:30", hue: 356 },
-  { title: "Morning Ritual", client: "Brewhaus Coffee", views: "860K", dur: "00:20", hue: 22 },
-  { title: "Drop 04", client: "Urban Threads", views: "3.2M", dur: "00:15", hue: 340 },
-  { title: "Stronger Every Day", client: "Nova Fitness", views: "940K", dur: "00:25", hue: 0 },
-  { title: "Serum Macro Series", client: "Aura Skincare", views: "510K", dur: "00:18", hue: 30 },
-  { title: "15s Reel Pack", client: "Café Lumen", views: "720K", dur: "00:15", hue: 45 },
-  { title: "Headphones Hero", client: "Pulse Audio", views: "1.8M", dur: "00:22", hue: 260 },
-  { title: "Sneaker Shorts", client: "Sole Society", views: "2.4M", dur: "00:28", hue: 350 },
-];
-
-// Categories kept in PROJECTS but not shown yet. To show one again, remove it
-// here and add its filter button back in index.html.
-const HIDDEN_CATEGORIES = ["youtube", "brand", "ugc"];
+// Recent work carousel: the real videos, reels first
+const REELS = ["reels", "aiugc", "collab"].flatMap((c) => PROJECTS.filter((p) => p.cat === c));
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -104,7 +79,7 @@ function thumbStyle(hue) {
     radial-gradient(circle at 15% 85%, hsl(${hue} 20% 14%) 0, transparent 45%),
     linear-gradient(150deg, #1b1b1b, #0b0b0b)`;
 }
-grid.innerHTML = PROJECTS.map((p, i) => HIDDEN_CATEGORIES.includes(p.cat) ? "" : `
+grid.innerHTML = PROJECTS.map((p, i) => `
   <article class="card${p.tall ? " card--tall" : ""}" data-cat="${p.cat}" data-index="${i}" tabindex="0" role="button" aria-label="Play ${p.title}">
     <div class="card__media">
       <div class="thumb" style="${thumbStyle(p.hue)}"></div>
@@ -149,11 +124,11 @@ const dotsEl = $("#reelDots");
 track.innerHTML = REELS.map((r, i) => `
   <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="${r.client}: ${r.title}">
     <div class="thumb" style="${thumbStyle(r.hue)}"></div>
-    <span class="reel-card__dur">${r.dur}</span>
+    <img class="card__yt" src="https://i.ytimg.com/vi/${r.youtube}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()" />
     <span class="reel-card__play"><span class="play-ico"></span></span>
     <div class="reel-card__info">
       <h3>${r.title}</h3>
-      <p>${r.client} · ${r.views} views</p>
+      <p>${r.client} · ${r.label}</p>
     </div>
   </article>`).join("");
 dotsEl.innerHTML = REELS.map((r, i) => `<button class="coverflow__dot" role="tab" aria-label="${r.client}: ${r.title}" data-go="${i}"></button>`).join("");
@@ -208,7 +183,11 @@ const coverflow = $("#coverflow");
 let autoTimer = null;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function stopAuto() { clearInterval(autoTimer); }
-function startAuto() { stopAuto(); if (!reduceMotion) autoTimer = setInterval(() => slide(1), 3000); }
+function startAuto() {
+  stopAuto();
+  // Stay paused while a video is playing in the modal
+  if (!reduceMotion && document.getElementById("modal").hidden) autoTimer = setInterval(() => slide(1), 3000);
+}
 coverflow.addEventListener("mouseenter", stopAuto);
 coverflow.addEventListener("mouseleave", startAuto);
 coverflow.addEventListener("focusin", stopAuto);
@@ -251,6 +230,7 @@ function openModal(title, video, youtube) {
   link.hidden = !youtube;
   if (youtube) link.href = `https://youtu.be/${youtube}`;
   modal.hidden = false;
+  stopAuto();
   document.body.classList.add("no-scroll");
   $(".modal__close", modal).focus();
 }
@@ -259,6 +239,7 @@ function closeModal() {
   screen.innerHTML = placeholder;
   document.body.classList.remove("no-scroll");
   lastFocus && lastFocus.focus();
+  if (!coverflow.matches(":hover")) startAuto();
 }
 $$("[data-close]", modal).forEach((el) => el.addEventListener("click", closeModal));
 document.addEventListener("keydown", (e) => {
@@ -276,13 +257,11 @@ function activate(el) {
     const i = +el.dataset.reel;
     if (i !== active) { goTo(i); return; } // side reels come to the front first
     const r = REELS[i];
-    openModal(`${r.client}: ${r.title}`, r.video);
-  } else {
-    openModal(el.dataset.title, el.dataset.video);
+    openModal(`${r.client}: ${r.title}`, r.video, r.youtube);
   }
 }
 document.addEventListener("click", (e) => {
-  const el = e.target.closest(".play-trigger, .card, .reel-card");
+  const el = e.target.closest(".card, .reel-card");
   if (el) activate(el);
 });
 document.addEventListener("keydown", (e) => {
