@@ -32,9 +32,9 @@ const PROJECTS = [
   { title: "Honest Unboxing Review", client: "Glow Theory", cat: "ugc", label: "UGC", dur: "00:45", hue: 330, tall: true },
   { title: "Day in My Life Ad", client: "FitFuel", cat: "ugc", label: "UGC", dur: "00:35", hue: 10 },
   { title: "Customer Testimonial Series", client: "HomeNest", cat: "ugc", label: "UGC", dur: "00:30", hue: 200 },
-  { title: "AI Avatar Product Demo", client: "Lumo Skincare", cat: "aiugc", label: "AI UGC", dur: "00:30", hue: 280, tall: true },
-  { title: "AI Creator Ad Variations", client: "SnackBox", cat: "aiugc", label: "AI UGC", dur: "00:20", hue: 160 },
-  { title: "Multilingual AI Testimonials", client: "PayLite", cat: "aiugc", label: "AI UGC", dur: "00:25", hue: 230 },
+  { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
+  { title: "AI UGC 02", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "L9FkbrXl1Ws", hue: 160 },
+  { title: "AI UGC 03", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "foid0NQ2hQs", hue: 230 },
 ];
 
 // Recent work reels (vertical carousel). Add a `video` embed URL to play it in the modal.
