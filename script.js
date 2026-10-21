@@ -8,11 +8,13 @@ const CONTACT = {
   whatsapp: "918197549609", // country code + number, digits only
 };
 
-// Portfolio items. Add a `video` URL (YouTube/Vimeo embed) to play it in the modal.
+// Portfolio items. Set `youtube` to a YouTube video ID to show its thumbnail and play it in the modal.
 const PROJECTS = [
   { title: "Launch Film", client: "Velora Watches", cat: "brand", label: "Brand Ad", dur: "01:00", hue: 356 },
   { title: "Morning Ritual", client: "Brewhaus Coffee", cat: "product", label: "Product Shoot", dur: "00:45", hue: 22 },
   { title: "Studio Setup Tour", client: "Tech Unboxed", cat: "youtube", label: "YouTube", dur: "12:48", hue: 210 },
+  { title: "Reel 01", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
+  { title: "Reel 02", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "V-wRv02olPQ", hue: 10, tall: true },
   { title: "Drop 04", client: "Urban Threads", cat: "reels", label: "Reels & Shorts", dur: "00:30", hue: 340, tall: true },
   { title: "Stronger Every Day", client: "Nova Fitness", cat: "brand", label: "Brand Ad", dur: "00:40", hue: 0 },
   { title: "Serum Macro Series", client: "Aura Skincare", cat: "product", label: "Product Shoot", dur: "00:20", hue: 30 },
@@ -100,8 +102,9 @@ grid.innerHTML = PROJECTS.map((p, i) => `
   <article class="card${p.tall ? " card--tall" : ""}" data-cat="${p.cat}" data-index="${i}" tabindex="0" role="button" aria-label="Play ${p.title}">
     <div class="card__media">
       <div class="thumb" style="${thumbStyle(p.hue)}"></div>
+      ${p.youtube ? `<img class="card__yt" src="https://i.ytimg.com/vi/${p.youtube}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()" />` : ""}
       <div class="card__overlay"><span><span class="play-ico"></span></span></div>
-      <span class="card__dur">${p.dur}</span>
+      ${p.dur ? `<span class="card__dur">${p.dur}</span>` : ""}
     </div>
     <div class="card__body">
       <span class="tag">${p.label}</span>
@@ -230,12 +233,17 @@ const screen = $(".modal__screen", modal);
 const placeholder = screen.innerHTML;
 let lastFocus = null;
 
-function openModal(title, video) {
+function openModal(title, video, youtube) {
   lastFocus = document.activeElement;
   $("#modalTitle").textContent = title || "";
+  if (youtube) video = `https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1&rel=0&playsinline=1`;
   screen.innerHTML = video
-    ? `<iframe src="${video}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${title}"></iframe>`
+    ? `<iframe src="${video}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="${title}"></iframe>`
     : placeholder;
+  // Direct link as a fallback where embedded players are blocked
+  const link = $("#modalLink");
+  link.hidden = !youtube;
+  if (youtube) link.href = `https://youtu.be/${youtube}`;
   modal.hidden = false;
   document.body.classList.add("no-scroll");
   $(".modal__close", modal).focus();
@@ -257,7 +265,7 @@ document.addEventListener("keydown", (e) => {
 function activate(el) {
   if (el.classList.contains("card")) {
     const p = PROJECTS[el.dataset.index];
-    openModal(`${p.client}: ${p.title}`, p.video);
+    openModal(`${p.client}: ${p.title}`, p.video, p.youtube);
   } else if (el.classList.contains("reel-card")) {
     const i = +el.dataset.reel;
     if (i !== active) { goTo(i); return; } // side reels come to the front first
