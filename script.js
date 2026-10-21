@@ -128,10 +128,11 @@ new IntersectionObserver((entries, obs) => {
   obs.disconnect();
 }, { threshold: 0.1 }).observe(grid);
 
-/* ---------- Reel carousel ---------- */
+/* ---------- Reel coverflow (endless loop, active reel in front) ---------- */
 const track = $("#reelTrack");
+const dotsEl = $("#reelDots");
 track.innerHTML = REELS.map((r, i) => `
-  <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="Play ${r.client}: ${r.title}">
+  <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="${r.client}: ${r.title}">
     <div class="thumb" style="${thumbStyle(r.hue)}"></div>
     <span class="reel-card__dur">${r.dur}</span>
     <span class="reel-card__play"><span class="play-ico"></span></span>
@@ -140,50 +141,82 @@ track.innerHTML = REELS.map((r, i) => `
       <p>${r.client} · ${r.views} views</p>
     </div>
   </article>`).join("");
+dotsEl.innerHTML = REELS.map((r, i) => `<button class="coverflow__dot" role="tab" aria-label="${r.client}: ${r.title}" data-go="${i}"></button>`).join("");
 
-const reelStep = () => track.querySelector(".reel-card").offsetWidth + 16;
-const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-function slide(dir) {
-  if (dir > 0 && atEnd()) track.scrollTo({ left: 0, behavior: "smooth" });
-  else track.scrollBy({ left: dir * reelStep(), behavior: "smooth" });
+const reelCards = $$(".reel-card", track);
+const dots = $$(".coverflow__dot", dotsEl);
+const total = REELS.length;
+let active = 0;
+const lastOffset = new Array(total).fill(null);
+
+// Shortest signed distance from the active reel, so the loop has no end
+function offsetOf(i) {
+  let d = (i - active) % total;
+  if (d > total / 2) d -= total;
+  if (d < -total / 2) d += total;
+  return d;
 }
-$("#reelPrev").addEventListener("click", () => slide(-1));
-$("#reelNext").addEventListener("click", () => slide(1));
-track.addEventListener("scroll", () => {
-  const max = track.scrollWidth - track.clientWidth;
-  $("#reelProgress").style.width = (max > 0 ? 20 + 80 * (track.scrollLeft / max) : 100) + "%";
-}, { passive: true });
 
-// Auto-advance, paused while the visitor is interacting
+function layout() {
+  const w = reelCards[0].offsetWidth;
+  const narrow = innerWidth < 640;
+  const gap = w * (narrow ? 0.62 : 0.95);
+  reelCards.forEach((card, i) => {
+    const d = offsetOf(i);
+    const a = Math.abs(d);
+    const visible = a <= (narrow ? 2 : 3);
+    // A reel wrapping from one end to the other jumps instead of sliding across
+    card.classList.toggle("no-anim", lastOffset[i] !== null && Math.abs(d - lastOffset[i]) > 1);
+    lastOffset[i] = d;
+    const x = Math.sign(d) * (a === 0 ? 0 : gap * (1 + (a - 1) * 0.72));
+    card.style.transform = `translateX(calc(-50% + ${x}px)) translateZ(${-a * 140}px) rotateY(${-d * 22}deg) scale(${1 - a * 0.1})`;
+    card.style.zIndex = 100 - a;
+    card.style.opacity = visible ? 1 - a * 0.18 : 0;
+    card.style.pointerEvents = visible ? "" : "none";
+    card.classList.toggle("is-active", d === 0);
+    card.setAttribute("aria-label", `${REELS[i].client}: ${REELS[i].title}${d === 0 ? " (play)" : ""}`);
+  });
+  dots.forEach((dot, i) => { dot.classList.toggle("active", i === active); dot.setAttribute("aria-selected", i === active); });
+  requestAnimationFrame(() => reelCards.forEach((c) => c.classList.remove("no-anim")));
+}
+function goTo(i) { active = (i + total) % total; layout(); }
+const slide = (dir) => goTo(active + dir);
+
+$("#reelPrev").addEventListener("click", () => { slide(-1); startAuto(); });
+$("#reelNext").addEventListener("click", () => { slide(1); startAuto(); });
+dots.forEach((dot) => dot.addEventListener("click", () => { goTo(+dot.dataset.go); startAuto(); }));
+window.addEventListener("resize", layout);
+layout();
+
+// Auto-advance, paused while the visitor hovers or interacts
+const coverflow = $("#coverflow");
 let autoTimer = null;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-function startAuto() { if (!reduceMotion) { stopAuto(); autoTimer = setInterval(() => slide(1), 3500); } }
 function stopAuto() { clearInterval(autoTimer); }
-["mouseenter", "touchstart", "focusin"].forEach((ev) => track.addEventListener(ev, stopAuto, { passive: true }));
-["mouseleave", "focusout"].forEach((ev) => track.addEventListener(ev, startAuto));
+function startAuto() { stopAuto(); if (!reduceMotion) autoTimer = setInterval(() => slide(1), 3000); }
+coverflow.addEventListener("mouseenter", stopAuto);
+coverflow.addEventListener("mouseleave", startAuto);
+coverflow.addEventListener("focusin", stopAuto);
+coverflow.addEventListener("focusout", startAuto);
+document.addEventListener("visibilitychange", () => (document.hidden ? stopAuto() : startAuto()));
 startAuto();
 
-// Drag to scroll with a mouse
+// Swipe / drag to move one reel at a time
 let drag = null;
-track.addEventListener("pointerdown", (e) => {
-  if (e.pointerType !== "mouse") return;
-  drag = { x: e.clientX, left: track.scrollLeft, moved: false };
-  track.classList.add("dragging");
-});
-window.addEventListener("pointermove", (e) => {
+let dragged = false;
+coverflow.addEventListener("pointerdown", (e) => { drag = { x: e.clientX }; dragged = false; stopAuto(); });
+window.addEventListener("pointerup", (e) => {
   if (!drag) return;
   const dx = e.clientX - drag.x;
-  if (Math.abs(dx) > 5) drag.moved = true;
-  track.scrollLeft = drag.left - dx;
+  drag = null;
+  if (Math.abs(dx) > 40) { dragged = true; slide(dx < 0 ? 1 : -1); }
+  if (!coverflow.matches(":hover")) startAuto();
 });
-window.addEventListener("pointerup", () => {
-  if (!drag) return;
-  track.classList.remove("dragging");
-  const moved = drag.moved;
-  setTimeout(() => { drag = null; }, 0);
-  if (moved) track.scrollTo({ left: Math.round(track.scrollLeft / reelStep()) * reelStep(), behavior: "smooth" });
+coverflow.addEventListener("click", (e) => { if (dragged) { e.stopPropagation(); dragged = false; } }, true);
+coverflow.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") { slide(1); reelCards[active].focus(); }
+  if (e.key === "ArrowLeft") { slide(-1); reelCards[active].focus(); }
 });
-track.addEventListener("click", (e) => { if (drag && drag.moved) { e.stopPropagation(); e.preventDefault(); } }, true);
 
 /* ---------- Video modal ---------- */
 const modal = $("#modal");
@@ -220,7 +253,9 @@ function activate(el) {
     const p = PROJECTS[el.dataset.index];
     openModal(`${p.client}: ${p.title}`, p.video);
   } else if (el.classList.contains("reel-card")) {
-    const r = REELS[el.dataset.reel];
+    const i = +el.dataset.reel;
+    if (i !== active) { goTo(i); return; } // side reels come to the front first
+    const r = REELS[i];
     openModal(`${r.client}: ${r.title}`, r.video);
   } else {
     openModal(el.dataset.title, el.dataset.video);
