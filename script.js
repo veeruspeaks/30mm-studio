@@ -15,7 +15,7 @@ const PROJECTS = [
   { title: "EI-7010A Tripod", client: "E-Image", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
   { title: "FM02 Filmog", client: "ULANZI", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
   { title: "Ntorq 150cc Scooter", client: "TVS", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
-  { title: "Reel 01", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
+  { title: "Anmol Garg", client: "", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
   { title: "Reel 02", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "V-wRv02olPQ", hue: 10, tall: true },
   { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
   { title: "AI UGC 02", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "L9FkbrXl1Ws", hue: 160 },
@@ -24,6 +24,9 @@ const PROJECTS = [
 
 // Recent work carousel: the real videos, reels first
 const REELS = ["reels", "aiugc", "collab"].flatMap((c) => PROJECTS.filter((p) => p.cat === c));
+
+// "Client: Title", or just the title when there is no client
+const fullName = (p) => (p.client ? `${p.client}: ${p.title}` : p.title);
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -90,7 +93,7 @@ grid.innerHTML = PROJECTS.map((p, i) => `
     <div class="card__body">
       <span class="tag">${p.label}</span>
       <h3>${p.title}</h3>
-      <p>${p.client}</p>
+      ${p.client ? `<p>${p.client}</p>` : ""}
     </div>
   </article>`).join("");
 
@@ -122,16 +125,16 @@ new IntersectionObserver((entries, obs) => {
 const track = $("#reelTrack");
 const dotsEl = $("#reelDots");
 track.innerHTML = REELS.map((r, i) => `
-  <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="${r.client}: ${r.title}">
+  <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="${fullName(r)}">
     <div class="thumb" style="${thumbStyle(r.hue)}"></div>
     <img class="card__yt" src="https://i.ytimg.com/vi/${r.youtube}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()" />
     <span class="reel-card__play"><span class="play-ico"></span></span>
     <div class="reel-card__info">
       <h3>${r.title}</h3>
-      <p>${r.client} · ${r.label}</p>
+      <p>${r.client ? `${r.client} · ` : ""}${r.label}</p>
     </div>
   </article>`).join("");
-dotsEl.innerHTML = REELS.map((r, i) => `<button class="coverflow__dot" role="tab" aria-label="${r.client}: ${r.title}" data-go="${i}"></button>`).join("");
+dotsEl.innerHTML = REELS.map((r, i) => `<button class="coverflow__dot" role="tab" aria-label="${fullName(r)}" data-go="${i}"></button>`).join("");
 
 const reelCards = $$(".reel-card", track);
 const dots = $$(".coverflow__dot", dotsEl);
@@ -164,7 +167,7 @@ function layout() {
     card.style.opacity = visible ? 1 - a * 0.18 : 0;
     card.style.pointerEvents = visible ? "" : "none";
     card.classList.toggle("is-active", d === 0);
-    card.setAttribute("aria-label", `${REELS[i].client}: ${REELS[i].title}${d === 0 ? " (play)" : ""}`);
+    card.setAttribute("aria-label", `${fullName(REELS[i])}${d === 0 ? " (play)" : ""}`);
   });
   dots.forEach((dot, i) => { dot.classList.toggle("active", i === active); dot.setAttribute("aria-selected", i === active); });
   requestAnimationFrame(() => reelCards.forEach((c) => c.classList.remove("no-anim")));
@@ -252,12 +255,12 @@ document.addEventListener("keydown", (e) => {
 function activate(el) {
   if (el.classList.contains("card")) {
     const p = PROJECTS[el.dataset.index];
-    openModal(`${p.client}: ${p.title}`, p.video, p.youtube);
+    openModal(fullName(p), p.video, p.youtube);
   } else if (el.classList.contains("reel-card")) {
     const i = +el.dataset.reel;
     if (i !== active) { goTo(i); return; } // side reels come to the front first
     const r = REELS[i];
-    openModal(`${r.client}: ${r.title}`, r.video, r.youtube);
+    openModal(fullName(r), r.video, r.youtube);
   }
 }
 document.addEventListener("click", (e) => {
