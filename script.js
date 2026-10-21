@@ -22,6 +22,9 @@ const PROJECTS = [
   { title: "Headphones Hero", client: "Pulse Audio", cat: "product", label: "Product Shoot", dur: "00:35", hue: 260 },
   { title: "Himalaya Travel Vlog", client: "Wanderlog", cat: "youtube", label: "YouTube", dur: "22:31", hue: 190 },
   { title: "Sneaker Shorts", client: "Sole Society", cat: "reels", label: "Reels & Shorts", dur: "00:25", hue: 350, tall: true },
+  { title: "Honest Unboxing Review", client: "Glow Theory", cat: "ugc", label: "UGC", dur: "00:45", hue: 330, tall: true },
+  { title: "Day in My Life Ad", client: "FitFuel", cat: "ugc", label: "UGC", dur: "00:35", hue: 10 },
+  { title: "Customer Testimonial Series", client: "HomeNest", cat: "ugc", label: "UGC", dur: "00:30", hue: 200 },
 ];
 
 // Recent work reels (vertical carousel). Add a `video` embed URL to play it in the modal.
