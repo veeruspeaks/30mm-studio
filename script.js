@@ -16,7 +16,6 @@ const PROJECTS = [
   { title: "FM02 Filmog", client: "ULANZI", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
   { title: "Ntorq 150cc Scooter", client: "TVS", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
   { title: "Anmol Garg", client: "", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
-  { title: "Church Street", client: "Self project", cat: "reels", label: "Reels & Shorts", youtube: "V-wRv02olPQ", hue: 10, tall: true },
   { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
   { title: "AI UGC 02", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "L9FkbrXl1Ws", hue: 160 },
   { title: "AI UGC 03", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "foid0NQ2hQs", hue: 230 },
