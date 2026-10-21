@@ -4,8 +4,8 @@
 
 // Business contact details, update these in one place
 const CONTACT = {
-  email: "hello@30mmstudio.com",
-  whatsapp: "919999999999", // country code + number, digits only
+  email: "30mmstudio09@gmail.com",
+  whatsapp: "918197549609", // country code + number, digits only
 };
 
 // Portfolio items. Add a `video` URL (YouTube/Vimeo embed) to play it in the modal.
@@ -343,14 +343,10 @@ function briefText(b) {
   return [...lines, "", b.message].join("\n");
 }
 
+// Pressing Enter in the form sends the brief through WhatsApp
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (!validate()) return;
-  const b = collectBrief();
-  const subject = encodeURIComponent(`New project brief: ${b.company || b.name}`);
-  window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${encodeURIComponent(briefText(b))}`;
-  note.className = "form-note ok";
-  note.textContent = `Your brief is ready in your email app. If it didn't open, write to us at ${CONTACT.email}.`;
+  if (validate()) waLink.click();
 });
 
 // Keep the WhatsApp link's prefilled text in sync with the form
@@ -359,6 +355,9 @@ function updateWhatsapp() {
   const text = encodeURIComponent("Hi 30mm Studio, here's my project brief:\n\n" + briefText(collectBrief()));
   waLink.href = `https://wa.me/${CONTACT.whatsapp}?text=${text}`;
 }
-form.addEventListener("input", updateWhatsapp);
+form.addEventListener("input", () => {
+  updateWhatsapp();
+  if (note.classList.contains("err")) validate(); // clear the error once fixed
+});
 updateWhatsapp();
 waLink.addEventListener("click", (e) => { if (!validate()) e.preventDefault(); });

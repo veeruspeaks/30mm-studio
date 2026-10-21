@@ -456,9 +456,9 @@ body.loaded .hero__title .line > span { transform: none; }
 
 /* ---------- Footer ---------- */
 .footer { border-top: 1px solid var(--line); padding: 60px 0 30px; overflow: hidden; }
-.footer__big { font-family: var(--font-display); font-weight: 600; font-size: clamp(64px, 15vw, 200px); line-height: .9; letter-spacing: -.04em; color: var(--black-4); user-select: none; }
-.footer__big span { color: var(--red); }
-.footer__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.footer__brand { font-family: var(--font-display); font-size: 22px; color: var(--muted); }
+.footer__brand b { font-weight: 600; color: var(--text); }
+.footer__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
 .socials { display: flex; flex-wrap: wrap; gap: 22px; }
 .socials a, .to-top { transition: color .3s; }
 .socials a:hover, .to-top:hover { color: var(--red); }
