@@ -10,11 +10,11 @@ const CONTACT = {
 
 // Portfolio items. Set `youtube` to a YouTube video ID to show its thumbnail and play it in the modal.
 const PROJECTS = [
-  { title: "Brand Collab 01", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "1lbpZiuJzy8", hue: 356 },
-  { title: "Brand Collab 02", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "WrjbeJRFvTc", hue: 22 },
-  { title: "Brand Collab 03", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
-  { title: "Brand Collab 04", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
-  { title: "Brand Collab 05", client: "30mm Studio", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
+  { title: "XLR/USB Dynamic Microphone", client: "MAONO", cat: "collab", label: "Brand Collab", youtube: "1lbpZiuJzy8", hue: 356 },
+  { title: "LM01 RGB Flashlight", client: "ULANZI", cat: "collab", label: "Brand Collab", youtube: "WrjbeJRFvTc", hue: 22 },
+  { title: "EI-7010A Tripod", client: "E-Image", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
+  { title: "FM02 Filmog", client: "ULANZI", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
+  { title: "Ntorq 150cc Scooter", client: "TVS", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
   { title: "Reel 01", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
   { title: "Reel 02", client: "30mm Studio", cat: "reels", label: "Reels & Shorts", youtube: "V-wRv02olPQ", hue: 10, tall: true },
   { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
