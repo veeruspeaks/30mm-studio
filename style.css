@@ -315,9 +315,9 @@ body.loaded .hero__title .line > span { transform: none; }
 .filter:hover { color: var(--text); border-color: var(--muted); }
 .filter.active { background: var(--text); color: var(--black); border-color: var(--text); font-weight: 500; }
 
-.grid { columns: 3; column-gap: 20px; }
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .card {
-  position: relative; display: block; break-inside: avoid; margin-bottom: 20px;
+  position: relative; display: block;
   border-radius: var(--radius); overflow: hidden; cursor: pointer;
   background: var(--black-3); border: 1px solid var(--line);
   transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .3s;
@@ -325,8 +325,8 @@ body.loaded .hero__title .line > span { transform: none; }
 .card:hover { border-color: var(--line-2); }
 .card.is-hidden { display: none; }
 .card.is-entering { opacity: 0; transform: translateY(24px) scale(.98); }
-.card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
-.card--tall .card__media { aspect-ratio: 9 / 12; }
+/* Vertical 9:16 frame: crops YouTube's 4:3 Shorts thumbnail to its sharp centre strip */
+.card__media { position: relative; aspect-ratio: 9 / 16; overflow: hidden; }
 .card__media .thumb::after { background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.6)); }
 .card:hover .thumb { transform: scale(1.06); }
 .card__overlay {
@@ -488,7 +488,7 @@ body.loaded .hero__title .line > span { transform: none; }
    Responsive
    ========================================================= */
 @media (max-width: 1080px) {
-  .grid { columns: 2; }
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .team { grid-template-columns: repeat(2, 1fr); }
   .process { grid-template-columns: repeat(3, 1fr); row-gap: 36px; }
 }
@@ -525,8 +525,11 @@ body.loaded .hero__title .line > span { transform: none; }
   }
 
 @media (max-width: 640px) {
-  .grid { columns: 1; }
-  .card--tall .card__media { aspect-ratio: 4 / 5; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .card__body { padding: 14px 14px 16px; }
+  .card__body h3 { font-size: 14px; }
+  .card__body p { font-size: 13px; }
+  .card__body .tag { font-size: 10px; padding: 4px 9px; }
   .featured__grid { grid-template-columns: 1fr; }
   .feat:first-child { grid-column: auto; min-height: 320px; }
   .feat { min-height: 260px; }

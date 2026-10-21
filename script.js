@@ -15,7 +15,7 @@ const PROJECTS = [
   { title: "EI-7010A Tripod", client: "E-Image", cat: "collab", label: "Brand Collab", youtube: "tl1F0aAKXYY", hue: 200 },
   { title: "FM02 Filmog", client: "ULANZI", cat: "collab", label: "Brand Collab", youtube: "MBNIJCKUMvQ", hue: 280 },
   { title: "Ntorq 150cc Scooter", client: "TVS", cat: "collab", label: "Brand Collab", youtube: "bmkZkdGIqYc", hue: 10 },
-  { title: "Anmol Garg", client: "", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350, tall: true },
+  { title: "Anmol Garg", client: "", cat: "reels", label: "Reels & Shorts", youtube: "s9NH-iMiIJQ", hue: 350 },
   { title: "AI UGC 01", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "lOKzthQCX3M", hue: 280 },
   { title: "AI UGC 02", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "L9FkbrXl1Ws", hue: 160 },
   { title: "AI UGC 03", client: "30mm Studio", cat: "aiugc", label: "AI UGC", youtube: "foid0NQ2hQs", hue: 230 },
@@ -26,6 +26,13 @@ const REELS = ["reels", "aiugc", "collab"].flatMap((c) => PROJECTS.filter((p) =>
 
 // "Client: Title", or just the title when there is no client
 const fullName = (p) => (p.client ? `${p.client}: ${p.title}` : p.title);
+
+// YouTube thumbnail: the sharper 640px version, falling back to 480px when a video
+// has none (YouTube then serves a tiny 120px placeholder instead of an error)
+const ytThumb = (id) =>
+  `<img class="card__yt" src="https://i.ytimg.com/vi/${id}/sddefault.jpg" alt="" loading="lazy"
+    onload="if (this.naturalWidth < 200 && !this.dataset.fallback) { this.dataset.fallback = 1; this.src = 'https://i.ytimg.com/vi/${id}/hqdefault.jpg'; }"
+    onerror="this.remove()" />`;
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -82,10 +89,10 @@ function thumbStyle(hue) {
     linear-gradient(150deg, #1b1b1b, #0b0b0b)`;
 }
 grid.innerHTML = PROJECTS.map((p, i) => `
-  <article class="card${p.tall ? " card--tall" : ""}" data-cat="${p.cat}" data-index="${i}" tabindex="0" role="button" aria-label="Play ${p.title}">
+  <article class="card" data-cat="${p.cat}" data-index="${i}" tabindex="0" role="button" aria-label="Play ${p.title}">
     <div class="card__media">
       <div class="thumb" style="${thumbStyle(p.hue)}"></div>
-      ${p.youtube ? `<img class="card__yt" src="https://i.ytimg.com/vi/${p.youtube}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()" />` : ""}
+      ${p.youtube ? ytThumb(p.youtube) : ""}
       <div class="card__overlay"><span><span class="play-ico"></span></span></div>
       ${p.dur ? `<span class="card__dur">${p.dur}</span>` : ""}
     </div>
@@ -126,7 +133,7 @@ const dotsEl = $("#reelDots");
 track.innerHTML = REELS.map((r, i) => `
   <article class="reel-card" data-reel="${i}" tabindex="0" role="button" aria-label="${fullName(r)}">
     <div class="thumb" style="${thumbStyle(r.hue)}"></div>
-    <img class="card__yt" src="https://i.ytimg.com/vi/${r.youtube}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()" />
+    ${ytThumb(r.youtube)}
     <span class="reel-card__play"><span class="play-ico"></span></span>
     <div class="reel-card__info">
       <h3>${r.title}</h3>
