@@ -55,7 +55,7 @@ em { font-style: normal; color: var(--red); }
 /* ---------- Loader ---------- */
 .loader {
   position: fixed; inset: 0; z-index: 300;
-  display: grid; place-content: center; gap: 22px;
+  display: grid; place-content: center; justify-items: center; gap: 22px;
   background: var(--black);
   transition: opacity .7s var(--ease), visibility .7s;
 }
